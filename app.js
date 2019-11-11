@@ -9,8 +9,8 @@ let foods= [];
 
 
 const snakeCell ={
-    width: 20,
-    height: 20,
+    width: 18,
+    height: 18,
     color:'green'
 };
 
@@ -19,25 +19,25 @@ const food = {
     hight: 20,
     color: 'orange'
 };
-
-let direction = 99;
+let move = 20;
+let direction = [0, move];
 document.addEventListener('keydown', function(event){
     switch(event.keyCode) {
         case 37: 
-            direction = 0; break;
+            direction = [-move, 0]; break;
         case 38: 
-            direction = 1; break;
+            direction = [0, -move]; break;
         case 39: 
-            direction = 2; break;
+            direction = [move, 0]; break;
         case 40: 
-            direction = 3; break;
+            direction = [0, move]; break;
     }
 } );
 
 const drawSnake =(snake, i)=>{
     cvs.save();
     if (i===0){
-        cvs.fillStyle = 'black';
+      cvs.fillStyle = 'red';
     } else {
         cvs.fillStyle = snakeCell.color;
     }
@@ -52,6 +52,28 @@ const drawFood =(f, i)=>{
     cvs.restore();
 };
 
+const updateSnake =()=> {
+    for (let i=snakeList.length-1; i >= 0; --i){
+        if (snakeList[i].x === 0) {snakeList[i].x = 500}
+        if (snakeList[i].y === 0) {snakeList[i].y = 500}
+        if (i === 0){
+            snakeList[i].x = (snakeList[i].x + direction[0])%Height;
+            snakeList[i].y = (snakeList[i].y + direction[1])%Width;
+        } else {
+            snakeList[i].x = (snakeList[i-1].x)%Height;
+            snakeList[i].y = (snakeList[i-1].y)%Width;
+        }
+    } 
+} 
+
+const updateSnakePosition =()=> {
+    cvs.fillRect(0,0,Width,Height);    
+    snakeList.forEach(drawSnake);
+    updateSnake();    
+}
+
+
+
 const newGame =()=> {
     snakeList = [
         {x:240, y:200},
@@ -61,6 +83,7 @@ const newGame =()=> {
     foods = [];
     //console.log("fef");
     snakeList.forEach(drawSnake);
+    setInterval(updateSnakePosition,500);
     
 } 
 
