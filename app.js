@@ -97,10 +97,10 @@ const updateBoard =()=> {
     cvs.fillStyle = "#177A4D";  
     cvs.fillRect(0,0,Width,Height);
     snake.forEach(drawSnake);    
-    snakeEatSnake();
     snakeEat();
     drawFood(food);
     updateSnake();    
+    snakeEatSnake();
 }
 
 const newGame =()=> {
